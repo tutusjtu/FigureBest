@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FigureBest 激活系统帮助文档</title>
+    <style>
+        /* 整体页面样式 */
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            margin: 1.5rem auto;
+            max-width: 1000px;
+            font-size: 14px;
+            color: #333;
+            background: #f4f7fa;
+            padding: 1rem;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 1.2rem;
+            text-align: center;
+            color: #2c5d8c;
+        }
+        h2 {
+            font-size: 20px;
+            margin: 1rem 0 0.8rem;
+            color: #2c5d8c;
+            border-bottom: 2px solid #2c5d8c;
+            padding-bottom: 0.3rem;
+        }
+        h3 {
+            font-size: 18px;
+            margin: 0.8rem 0;
+            color: #2c5d8c;
+        }
+        /* 目录样式 */
+        .toc {
+            background: #fff;
+            padding: 1rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 1.5rem;
+        }
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .toc li {
+            margin: 0.5rem 0;
+        }
+        .toc a {
+            color: #2c5d8c;
+            text-decoration: none;
+        }
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        /* 新增：目录风格超链接 */
+        a.toc-link {
+            color: #2c5d8c;
+            text-decoration: none;
+        }
+        a.toc-link:hover {
+            text-decoration: underline;
+        }
+        /* 区块样式 */
+        .section {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background-color: #fff;
+            border-left: 4px solid #336699;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        /* 图片占位符样式 */
+        .image-placeholder {
+            margin-top: 0.5rem;
+            text-align: center;
+            border: 1px dashed #ccc;
+            padding: 1rem;
+            color: #999;
+        }
+        /* 代码块和标识 */
+        code {
+            background: #f0f3f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 13px;
+            font-family: Consolas, monospace;
+        }
+        .warning {
+            color: #d32f2f;
+            font-weight: 600;
+            background: #fff2f2;
+            padding: 4px 8px;
+            border-radius: 3px;
+        }
+        .note {
+            color: #2e7d32;
+            font-weight: 600;
+            background: #f1f8e9;
+            padding: 4px 8px;
+            border-radius: 3px;
+        }
+        /* 列表样式 */
+        ul, ol {
+            margin: 0.6rem 0;
+            padding-left: 1.5rem;
+        }
+        li {
+            margin: 0.4rem 0;
+        }
+        /* 表格样式 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.8rem 0;
+            font-size: 13px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        th, td {
+            border: 1px solid #e0e0e0;
+            padding: 10px;
+            vertical-align: top;
+        }
+        th {
+            background-color: #336699;
+            color: #fff;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <h1>FigureBest 激活系统使用指南</h1>
+    
+    <!-- 目录导航 -->
+    <div class="toc">
+        <h2>目录</h2>
+        <ul>
+            <li><a href="#important">重要注意事项</a></li>
+            <li><a href="#how-to-get">如何获取激活码</a></li>
+            <li><a href="#step-guide">分步操作指南</a></li>
+        </ul>
+    </div>
+
+    <!-- 重要注意事项 -->
+    <div class="section" id="important">
+        <h2>重要注意事项</h2>  
+        <ul>
+            <li>
+                <strong>首次激活/激活码激活</strong>
+                <ul>
+                    <li>必须联网选择 <code>【方式二：激活码在线激活】</code></li>
+                    <li>根据<a class="toc-link" href="#how-to-get">如何获取激活码</a>找到并输入图通道提供的激活码（形如：<code>3f04432a94cea4576d04af7f0bcer429</code>）</li>
+                    <li>成功后，自动生成与设备绑定的许可证（.lic 文件）</li>
+                    <li class="note">许可证将自动添加到 MATLAB 搜索路径</li>
+                    <li class="warning">请确保网络畅通，并且安装FB的文件夹必须具有读取和写入权限（注意：MATLAB toolbox文件夹、OneDrive等网盘可能没有写入权限）！</li>
+                </ul>
+            </li>
+            <li>
+                <strong>再次激活/许可证激活</strong>
+                <ul>
+                    <li>无需联网，选择 <code>【方式一：许可证文件激活】</code></li>
+                    <li>定位到首次激活生成/图图发放的 .lic 文件</li>
+                    <li class="note">成功后自动更新 MATLAB 搜索路径</li>
+                </ul>
+            </li>
+            <li class="warning">
+                使用限制：
+                <ul>
+                    <li>激活次数 N = 设备数 n × 单设备可激活次数 m</li>
+                    <li>单设备重复激活将消耗额外次数</li>
+                    <li>具体次数以购买套餐为准</li>
+                </ul>
+            </li>
+            <li class="note">
+                文件管理：
+                <ul>
+                    <li>务必备份许可证文件；若购买激活次数为 N = 1，同一设备再次获得也需要再次付费！</li>
+                    <li>许可证绑定设备硬件，永久有效</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 如何获取激活码 -->
+    <div class="section" id="how-to-get">
+        <h2>如何获取激活码</h2>
+        <p>您可以通过以下方式获取激活码：</p>
+        <ul>
+            <li class="note">如果您还没有购买过FigureBest产品/想要为更多设备激活，请关注微信公众号“图通道”回复“FBV4”获取FigureBest/激活码</li>
+            <li>如果您已购买过FigureBest产品/剩余激活次数充足，按下方指导查询激活码</li>
+            <li>
+                从 <strong>面包多</strong> 购买 FB —— 购买过 FB产品本身或任何包含 FB 的产品（如全家桶、小食桶），都可以按此方式获得激活码，所获得的激活码都可以用于激活FB！
+                <div class="image-placeholder">
+                    <img src="../images/getActivationCodeFromMianbaoduo.png" alt="面包多购买 FB 激活码示意图" style="max-width:100%; height:auto;">
+                </div>
+            </li>
+            <li>
+                从 <strong>B站</strong> 购买 FB —— 购买过 FB 产品本身或任何包含 FB 的产品，都可以按此方式获得激活码，所获得的激活码都可以用于激活FB！
+                <div class="image-placeholder">
+                    <img src="../images/getActivationCodeFromBili.png" alt="B站购买 FB 激活码示意图" style="max-width:100%; height:auto;">
+                </div>
+            </li>            
+        </ul>
+        <p>若在获取激活码过程中遇到问题（如：机密设备不能联网激活），请发送邮件至 <a href="mailto:865774179@qq.com">865774179@qq.com</a>，邮件主题请写明 <code>【FigureBest激活码问题-[具体的订单号]】</code>，并在邮件正文中附上(1)所有购买记录/付款记录/完整的报错截图;(2)运行代码`getDeviceSerial(54749110)`后获得的结果数据，否则不予回复。</p>
+    </div>
+
+    <!-- 分步操作指南 -->
+    <div class="section" id="step-guide">
+        <h2>分步操作指南</h2>
+        <h3>方式一：许可证文件激活</h3>
+        <ol>
+            <li>切换至 <b>"许可证 | License File"</b> 模式</li>
+            <li>点击输入框选择本地 .lic 文件</li>
+            <li>点击 <b>"立即激活"</b> 按钮</li>
+            <li>等待状态提示：
+                <ul>
+                    <li class="note">绿色提示：激活成功</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3>方式二：激活码在线激活</h3>
+        <ol>
+            <li>切换至 <b>"激活码 | Activation Code"</b> 模式：</li>
+            <li>输入图通道提供的激活码</li>
+            <li>点击激活按钮：
+                <ul>
+                    <li class="note">显示 "正在连接服务器..."</li>
+                </ul>
+            </li>
+            <li>激活成功后：
+                <ul>
+                    <li class="note">显示打开许可证文件夹按钮，显示剩余激活次数</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+</body>
+</html>

@@ -1,0 +1,209 @@
+function tryfb()
+% 定义配色方案
+colorScheme.background = [1 1 1]; % 白色背景
+colorScheme.text = [0.1 0.1 0.5];         % 深蓝文本
+colorScheme.button_success = [0.2 0.6 0.2]; % 绿色成功按钮
+colorScheme.button_warning = [0.9 0.6 0.1]; % 橙色警告按钮
+colorScheme.button_error = [0.8 0.2 0.2];  % 红色错误按钮
+colorScheme.button_normal = [0.2 0.4 0.8]; % 蓝色常规按钮
+
+% 云函数地址
+url = 'https://1302752799-h7a0f1c6c8.ap-shanghai.tencentscf.com';
+
+% 设置 HTTP 请求选项
+options = weboptions('MediaType','application/json','RequestMethod','post','Timeout',10);
+
+% 获取设备信息
+mac = getMACAddress();
+active_time = datestr(now, 'yyyymmdd');
+jsonData = ['{"mac":"', mac, '", "active_time":"', active_time, '"}'];
+
+% 创建模态窗口
+fig = figure('Name','申请试用 Trial','NumberTitle','off','WindowStyle','modal',...
+    'Units','normalized','Position',[0.2 0.3 0.6 0.45],...
+    'Color',colorScheme.background);
+
+% 创建状态文本（双行显示）
+txt = uicontrol('Style','text','Parent',fig,...
+    'String',{...
+    '正在访问FB试用服务器...请耐心等待!';
+    'Accessing FB trial server... Please wait patiently!'},...
+    'Units','normalized','Position',[0.1 0.45 0.8 0.4],...
+    'FontSize',14, 'ForegroundColor',colorScheme.text,...
+    'HorizontalAlignment','center','BackgroundColor',colorScheme.background);
+
+% 创建多功能按钮
+btn = uicontrol('Style','pushbutton','Parent',fig,...
+    'String','', 'Visible','off',...
+    'Units','normalized','Position',[0.2 0.1 0.6 0.25],...
+    'FontSize',14, 'FontWeight','bold',...
+    'ForegroundColor','white','BackgroundColor',colorScheme.button_normal);
+
+drawnow;
+
+
+% --- 检测是否已经试用过的本地标识
+trialUsed = checkTrialMarker();
+if trialUsed == true
+    set(txt, 'String', {...
+        '该设备已申请过试用，请获取正版激活码！';
+        'Device already registered. Please obtain official license!';
+        '关注微信公众号"图通道"回复"FBV4"获取激活码';
+        'WeChat: "图通道" → Reply "FBV4" for activation code'});
+    set(btn, 'String','获取正版激活码 / Get Official License',...
+        'BackgroundColor',colorScheme.button_warning,...
+        'Visible','on', 'Callback', @(src,event) runActivation);
+    return;
+end
+
+% --- 网络连通性检测 ---
+try
+    webread('http://www.baidu.com', weboptions('Timeout',5));
+catch ME_net
+    set(txt, 'String', {...
+        '申请试用需要连接互联网，请检查您的网络!';
+        'Internet connection required. Please check your network!'});
+    set(btn, 'String','确定 / OK', 'Visible','on',...
+        'BackgroundColor',colorScheme.button_error,...
+        'Callback', @(src,event) close(fig));
+    return;
+end
+
+% --- 试用服务器访问 ---
+try
+    response = webwrite(url, jsonData, options);
+catch
+    set(txt, 'String', {...
+        '申请试用成功！试用许可证有效期7天！到期后自动失效!';
+        'Trial activated! License valid for 7 days. Will auto-expire!'});
+    set(btn, 'String','下载试用许可证 / Download Trial License',...
+        'BackgroundColor',colorScheme.button_success,...
+        'Visible','on', 'Callback', @(src,event) runPostTrial(txt,btn,fig));
+    return;
+end
+
+% --- 响应处理 ---
+if isfield(response, 'code') && response.code == 1
+    if isfield(response, 'message') && strfind(response.message, '已申请过')
+        set(txt, 'String', {...
+            '该设备已申请过试用，请获取正版激活码！';
+            'Device already registered. Please obtain official license!';
+            '关注微信公众号"图通道"回复"FBV4"获取激活码';
+            'WeChat: "图通道" → Reply "FBV4" for activation code'});
+        set(btn, 'String','获取正版激活码 / Get Official License',...
+            'BackgroundColor',colorScheme.button_warning,...
+            'Visible','on', 'Callback', @(src,event) runActivation);
+    else
+        set(txt, 'String', {...
+            '申请试用失败，未知错误';
+            'Activation failed: Unknown error'});
+        set(btn, 'String','确定 / OK', 'Visible','on',...
+            'BackgroundColor',colorScheme.button_error,...
+            'Callback', @(src,event) close(fig));
+    end
+else
+    set(txt, 'String', {...
+        '申请试用成功！试用许可证有效期7天！';
+        'Trial activated! License valid for 7 days!'});
+    set(btn, 'String','下载试用许可证 / Download Trial License',...
+        'BackgroundColor',colorScheme.button_success,...
+        'Visible','on', 'Callback', @(src,event) runPostTrial(txt,btn,fig));
+end
+end
+
+% --- 后续处理函数 ---
+function runPostTrial(txt,btn,fig)
+usableDays = 7;
+returned_serial = getDeviceSerial(usableDays);
+folderPath = uigetdir(pwd,'请选择FB试用lic导出文件夹; Select License Export Folder');
+
+if folderPath ~= 0
+    licFilePath = generateLicenseFile(returned_serial, folderPath);
+    
+    % 写入标识文件到本地隐藏目录
+    writeTrialMarker()
+    
+    set(txt, 'String', {...
+        '点击下方按钮打开FB激活系统';
+        'Click below to launch FB Activation System';
+        '使用刚刚获得的试用许可证激活';
+        'Use the generated trial license to activate'});
+    set(btn, 'String','打开激活系统 / Launch Activation',...
+        'BackgroundColor',[0.2 0.6 0.8],...
+        'Callback', @(src,event) onFigureBestActivation(fig));
+end
+end
+
+function runActivation()
+web('https://mbd.pub/o/bread/mbd-aJaVmZtx','-browser')
+end
+
+function onFigureBestActivation(fig)
+close(fig)
+FigureBestActivation
+end
+
+function writeTrialMarker()
+% 根据操作系统确定存放标识文件的目录
+if ispc
+    % Windows 环境：使用 %USERPROFILE%\AppData\Local\TrialMarker 目录
+    baseDir = fullfile(getenv('USERPROFILE'), 'AppData', 'Local');
+    markerDir = fullfile(baseDir, 'TrialMarker');
+elseif ismac
+    % macOS 环境：使用 ~/Library/Application Support/TrialMarker 目录
+    baseDir = fullfile(getenv('HOME'), 'Library', 'Application Support');
+    markerDir = fullfile(baseDir, 'TrialMarker');
+elseif isunix
+    % Linux/Unix 环境：使用 ~/ .trialMarker 目录（以点开头，较不显眼）
+    markerDir = fullfile(getenv('HOME'), '.trialMarker');
+else
+    % 如果无法判断操作系统，则使用当前工作目录下的 .trialMarker 文件夹
+    markerDir = fullfile(pwd, '.trialMarker');
+end
+
+% 如果目录不存在，则创建目录
+if ~exist(markerDir, 'dir')
+    mkdir(markerDir);
+end
+
+% 构造标识文件的完整路径
+markerFile = fullfile(markerDir, 'trial_success.marker');
+
+% 写入标识文件（写入当前时间戳）
+fid = fopen(markerFile, 'w');
+if fid == -1
+    warning('无法写入标识文件：%s', markerFile);
+else
+    fprintf(fid, 'Trial license applied successfully on %s\n', datestr(now));
+    fclose(fid);
+end
+end
+
+function trialUsed = checkTrialMarker()
+% 根据不同操作系统确定标识文件所在目录
+if ispc
+    % Windows 使用用户目录下的 AppData\Local\TrialMarker
+    baseDir = fullfile(getenv('USERPROFILE'), 'AppData', 'Local');
+    markerDir = fullfile(baseDir, 'TrialMarker');
+elseif ismac
+    % macOS 使用 ~/Library/Application Support/TrialMarker
+    baseDir = fullfile(getenv('HOME'), 'Library', 'Application Support');
+    markerDir = fullfile(baseDir, 'TrialMarker');
+elseif isunix
+    % Linux/Unix 使用隐藏目录 ~/.trialMarker
+    markerDir = fullfile(getenv('HOME'), '.trialMarker');
+else
+    % 无法判断操作系统时，使用当前工作目录下的 .trialMarker
+    markerDir = fullfile(pwd, '.trialMarker');
+end
+
+% 构造标识文件路径
+markerFile = fullfile(markerDir, 'trial_success.marker');
+
+% 判断标识文件是否存在
+if exist(markerFile, 'file') == 2
+    trialUsed = true;
+else
+    trialUsed = false;
+end
+end
