@@ -1,0 +1,5 @@
+left=748.00
+bottom=274.00
+width=430.00
+height=668.00
+units=pixels
