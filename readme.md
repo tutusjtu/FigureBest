@@ -49,7 +49,7 @@ FigureBest 采用许可证激活机制，具体操作和细节可查看激活框
 	
 	完成FB软件安装后，输入`>>fb`即可启动软件，如果未检测到有效许可证，会自动弹出激活窗口；您也可以运行`>>FigureBestActivation`手动打开激活窗口。
 	**注意：** FB4.6及之前发布的版本许可证与FB4.7及之后的许可证不通用！如果您首次使用FB4.7，**必须**要先输入激活码，联网激活下载许可证。
-	具体查找激活码的方式可以参见【激活窗口】中的帮助【？】按钮；或 [浏览器打开FB项目目录中的.\help_docs\activation_help.html](.\help_docs\activation_help.html)。
+	具体查找激活码的方式可以参见【激活窗口】中的帮助【？】按钮；或 [浏览器打开FB项目目录中的.\help_docs\activation_help.html](./help_docs/activation_help.html)。
 	
 	![](./images/md/activate.png)
 
