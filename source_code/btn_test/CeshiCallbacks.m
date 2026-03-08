@@ -32,6 +32,16 @@ classdef CeshiCallbacks
             handles.msg.String = ['测试图就绪'];pause(0.001)      
         end
         
+        function test4_Callback(src, eventdata, figHandle, handles)
+            handles.msg.String = ['生成测试图,请勿动...'];pause(0.001)
+            disp('=========test_FB code=========')
+            disp('[FB测试图源码]运行下方命令可查看测试图源代码')
+            disp('edit(''test_FB_4'')')
+            disp('==============================')
+            test_FB_4
+            handles.msg.String = ['测试图就绪'];pause(0.001)
+        end
+        
         function close_Callback(src, eventdata, figHandle, handles)
             % 隐藏 ceshi 面板
             if isfield(handles, 'ceshiPanel') && ishandle(handles.ceshiPanel)

@@ -15,8 +15,8 @@ classdef FBMoreCallbacks
         % 检查成功后的提示信息 / Success message
         disp('================')
         handles.msg.String = '完成 | 请查看Command窗口！';        
-        disp('【如何部署？Apply?】法一、点击{部署新版}按钮，选择下载后的{压缩文件}，剩下的自动完成！');
-        disp('【如何部署？Apply?】法二、解压{压缩文件}，全部添加到MATLAB工作路径，完成！');
+        disp('【如何部署？Apply?】法一、点击{更多->部署新版}按钮，选择下载后的{.zip压缩文件}，剩下的等待自动处理后，重启FB完成！');
+        disp('【如何部署？Apply?】法二、解压{.zip压缩文件}，保存FB重要用户模板，将新代码包全部添加到MATLAB工作路径，完成！');
     catch
         % 更新失败后的提示信息 / Failure message        
         handles.msg.String = '更新检查失败！请查看Command窗口的错误信息。 / Update check failed! Please see the Command Window for error details.';
@@ -50,7 +50,7 @@ end
         
         function tutorial_Callback(src, eventdata, figHandle, handles)
             % disp('【教程】按钮被点击');
-            web('https://www.bilibili.com/video/BV1eu4y1s7Re','-browser');
+            web('https://www.bilibili.com/video/BV1CGo3YXEjr?vd_source=e27bf25cd8017cfa45c386fde6d7e4f0&p=4','-browser');
         end
         
         function portfolio_Callback(src, eventdata, figHandle, handles)
