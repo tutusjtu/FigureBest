@@ -51,9 +51,11 @@ DefaultCharacterSet = feature('DefaultCharacterSet');
 locale = feature('locale');
 encoding = locale.encoding;
 if ~strcmp(DefaultCharacterSet, 'GBK') || ~strcmp(encoding, 'GBK')
-    disp(['[DefaultCharacterSet] ' DefaultCharacterSet '; [encoding] ' encoding])
-    disp('若非 GBK 编码，可能会出现乱码，但主要功能不受影响！')
-    disp('如可能，请修改为 GBK 编码。')
+    % disp(['[DefaultCharacterSet] ' DefaultCharacterSet '; [encoding] ' encoding])
+    % disp('The file is not encoded in GBK. Square-box garbled text may appear, but the main functionality is not affected.')
+    disp('[Attention] FB automatically switch the character set to GBK.Please restart MATLAB for the change to take effect.')
+    disp('If you want to switch it back, run characterSet(''utf8'') and restart MATLAB for the change to take effect.')
+    characterSet()
 end
 
 %% 添加搜索路径（可注释掉）
