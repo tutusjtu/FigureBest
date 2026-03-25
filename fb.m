@@ -43,6 +43,13 @@ end
 %% 显示启动信息
 disp(['FB is loading from : ' folderOfThis ' ... ']);
 
+%% 添加搜索路径（可注释掉）
+% 重新添加当前文件夹及其子文件夹到搜索路径，并永久保存设置
+addpath(genpath(folderOfThis));pause(0.1)
+savepath;
+% 切换工作目录
+cd(folderOfThis);
+
 %% 编码检查
 % ---------------------------
 % PASS: UTF8 或 GBK
@@ -57,13 +64,6 @@ if ~strcmp(DefaultCharacterSet, 'GBK') || ~strcmp(encoding, 'GBK')
     disp('If you want to switch it back, run characterSet(''utf8'') and restart MATLAB for the change to take effect.')
     characterSet()
 end
-
-%% 添加搜索路径（可注释掉）
-% 重新添加当前文件夹及其子文件夹到搜索路径，并永久保存设置
-addpath(genpath(folderOfThis));pause(0.1)
-savepath;
-% 切换工作目录
-cd(folderOfThis);
 
 %% 启动主程序
 FigureBest_v4
